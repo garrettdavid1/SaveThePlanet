@@ -83,30 +83,6 @@ $(document).ready(function () {
 
         this.update = function(){
 
-            // var mouseX = 0, mouseY = 0, limitX = 150-15, limitY = 150-15;
-            // var centerX = limitX / 2, centerY = limitY / 2;
-            // var radius = centerX;
-            // $(window).mousemove(function(e) {
-            //    var diffX = e.pageX - centerX;
-            //    var diffY = e.pageY - centerY;
-            
-            //    // Get the mouse distance from the center
-            //    var r = Math.sqrt(diffX * diffX + diffY * diffY);
-            
-            //    if (r > radius) {
-            //      // Scale the distance down to length 1 
-            //      diffX /= r;
-            //      diffY /= r;
-            
-            //      // Scale back up to the radius
-            //      diffX *= radius;
-            //      diffY *= radius;
-            //    }
-            
-            //    mouseX = centerX + diffX;
-            //    mouseY = centerY + diffY;
-            // });
-
                 this.relX = (mouse.x - midScreenWidth);
                 this.relY = (mouse.y - midScreenHeight);
                 this.dist = Math.sqrt(Math.pow(this.relX, 2) + Math.pow(this.relY, 2));
