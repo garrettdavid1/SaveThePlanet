@@ -68,32 +68,59 @@ $(document).ready(function () {
         this.width = width;
         this.height = height;
         this.color = color;
-        this.yMaxDist = planetToShield.radius + 60;
-        this.xMaxDist = planetToShield.radius + 60;
+        this.distFromPlanet = 60;
+        this.xOffset = -25;
+        this.yOffset = -5;
+        this.planetToShield = planetToShield;
+        this.distFromCenter = this.planetToShield.radius + this.distFromPlanet;
+        this.yMaxDist = midScreenHeight + planetToShield.radius + this.distFromPlanet;
+        this.yMinDist = midScreenHeight - planetToShield.radius - this.distFromPlanet;
+        this.xMaxDist = planetToShield.radius + this.distFromPlanet + midScreenWidth;
+        this.xMinDist = midScreenWidth - planetToShield.radius - this.distFromPlanet;
+        this.relX = 0;
+        this.relY = 0;
+        this.dist = 0;
 
         this.update = function(){
-            if(mouse.x > midScreenWidth + this.xMaxDist || mouse.x < midScreenWidth - this.xMaxDist){
-                if(mouse.x > midScreenWidth + this.xMaxDist){
-                    this.x = this.xMaxDist + midScreenWidth - 25;
-                } else{
-                    this.x = midScreenWidth - this.xMaxDist - 25;
-                }
-                
-            } else{
-                this.x = mouse.x - 25;
-            }
-            
 
-            if(mouse.y > midScreenHeight + this.yMaxDist || mouse.y < midScreenHeight - this.yMaxDist){
-                if(mouse.y > midScreenHeight + this.yMaxDist){
-                    this.y = this.yMaxDist + midScreenHeight - 5;
-                } else{
-                    this.y = midScreenHeight - this.yMaxDist - 5;
+            // var mouseX = 0, mouseY = 0, limitX = 150-15, limitY = 150-15;
+            // var centerX = limitX / 2, centerY = limitY / 2;
+            // var radius = centerX;
+            // $(window).mousemove(function(e) {
+            //    var diffX = e.pageX - centerX;
+            //    var diffY = e.pageY - centerY;
+            
+            //    // Get the mouse distance from the center
+            //    var r = Math.sqrt(diffX * diffX + diffY * diffY);
+            
+            //    if (r > radius) {
+            //      // Scale the distance down to length 1 
+            //      diffX /= r;
+            //      diffY /= r;
+            
+            //      // Scale back up to the radius
+            //      diffX *= radius;
+            //      diffY *= radius;
+            //    }
+            
+            //    mouseX = centerX + diffX;
+            //    mouseY = centerY + diffY;
+            // });
+
+                this.relX = (mouse.x - midScreenWidth);
+                this.relY = (mouse.y - midScreenHeight);
+                this.dist = Math.sqrt(Math.pow(this.relX, 2) + Math.pow(this.relY, 2));
+                if(this.dist > this.distFromCenter || this.dist < this.distFromCenter){
+                    this.relX /= this.dist;
+                    this.relY /= this.dist;
+
+                    this.relX *= this.distFromCenter;
+                    this.relY *= this.distFromCenter;
+
+                    this.x = midScreenWidth + this.relX + this.xOffset;
+                    this.y = midScreenHeight +this.relY + this.yOffset;
                 }
-                
-            } else{
-                this.y = mouse.y - 5;
-            }
+
             this.draw();
         }
 
@@ -120,7 +147,7 @@ $(document).ready(function () {
         midScreenHeight = innerHeight / 2;
         planetRadius = (innerWidth <= innerHeight) ? innerWidth / 8 : innerHeight / 8;
         planet = new Planet(midScreenWidth, midScreenHeight, planetRadius, 'gray', 'silver');
-        shield = new Shield(planet.x + planet.radius + 50, planet.y + planet.radius + 50, 50, 10, 'silver', planet);
+        shield = new Shield(planet.x + planet.radius + 35, planet.y, 50, 10, 'silver', planet);
     }
 
     function animate() {
